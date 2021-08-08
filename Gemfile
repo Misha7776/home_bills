@@ -17,6 +17,8 @@ gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
 gem 'devise'
 gem 'slim'
+gem 'graphql', '~> 1.9'
+gem 'graphiql-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -47,6 +49,8 @@ gem 'xlog'
 
 group :development, :test do
   gem 'dotenv'
+  gem 'pry'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -57,6 +61,7 @@ group :development do
 end
 
 group :test do
+  gem 'capybara'
   gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
   gem 'rspec-sidekiq'
   gem 'vcr'

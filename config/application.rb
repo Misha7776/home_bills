@@ -12,7 +12,7 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
-require "sprockets/railtie"
+# require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -42,5 +42,12 @@ module HomeBills
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.generators do |g|
+      g.test_framework  false
+      g.stylesheets     false
+      g.javascripts     false
+      g.helper          false
+      g.channel         assets: false
+    end
   end
 end
