@@ -1,7 +1,7 @@
-module Mutations
-  module Properties
-    class Create < Mutations::BaseMutation
-      # argument :user_id, Integer, required: true
+module Properties
+  module Mutations
+    class Update < BaseMutation
+      argument :id, Integer, required: true
       argument :name, String, required: true
       argument :address, String, required: false
       argument :city, String, required: false
@@ -10,21 +10,32 @@ module Mutations
       field :property, Types::PropertyType, null: true
       field :errors, [String], null: false
 
-      def resolve(**attributes)
+      def resolve(id:, **attributes)
         raise_unauthenticated if current_user.nil?
-        property = current_user.properties.build(attributes)
+        find_record(id)
+        assign_attributes(attributes)
 
-        if property.save
-          { property: property }
+        if record.save
+          { property: record }
         else
-          { errors: property.errors.full_messages }
+          { errors: record.errors.full_messages }
         end
       end
 
       private
 
+      attr_reader :record
+
       def raise_unauthenticated
         raise GraphQL::ExecutionError, 'You need to authenticate to perform this action'
+      end
+
+      def find_record(id)
+        @record = current_user.properties.find(id)
+      end
+
+      def assign_attributes(attributes)
+        record.assign_attributes(attributes)
       end
     end
   end

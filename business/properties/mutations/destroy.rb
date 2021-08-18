@@ -1,21 +1,16 @@
-module Mutations
-  module Properties
-    class Update < Mutations::BaseMutation
+module Properties
+  module Mutations
+    class Destroy < BaseMutation
       argument :id, Integer, required: true
-      argument :name, String, required: true
-      argument :address, String, required: false
-      argument :city, String, required: false
-      argument :notes, String, required: false
 
       field :property, Types::PropertyType, null: true
       field :errors, [String], null: false
 
-      def resolve(id:, **attributes)
+      def resolve(id:)
         raise_unauthenticated if current_user.nil?
         find_record(id)
-        assign_attributes(attributes)
 
-        if record.save
+        if record.destroy
           { property: record }
         else
           { errors: record.errors.full_messages }
