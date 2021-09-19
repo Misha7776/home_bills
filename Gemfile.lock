@@ -108,6 +108,8 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
     docile (1.4.0)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
     equalizer (0.0.11)
     erubi (1.10.0)
@@ -121,6 +123,9 @@ GEM
       i18n (>= 1.6, < 2)
     fakeredis (0.8.0)
       redis (~> 4.1)
+    faraday (1.1.0)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords
     ffi (1.15.1)
     flay (2.12.1)
       erubis (~> 2.7.0)
@@ -138,6 +143,15 @@ GEM
       sprockets-rails
     graphql (1.12.14)
     hashdiff (1.0.1)
+    http (3.3.0)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.0)
+      http_parser.rb (~> 0.6.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (2.1.1)
+    http_parser.rb (0.6.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
@@ -158,6 +172,7 @@ GEM
     mini_portile2 (2.5.3)
     minitest (5.14.4)
     msgpack (1.4.2)
+    multipart-post (2.1.1)
     nio4r (2.5.7)
     nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
@@ -262,6 +277,7 @@ GEM
     rubocop-ast (1.7.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.2)
     ruby_parser (3.16.0)
       sexp_processor (~> 4.15, >= 4.15.1)
     rubycritic (4.6.1)
@@ -322,6 +338,9 @@ GEM
     turbolinks-source (5.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.7)
     unicode-display_width (2.0.0)
     uniform_notifier (1.14.2)
     vcr (6.0.0)
@@ -370,8 +389,10 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fakeredis
+  faraday
   graphiql-rails
   graphql (~> 1.9)
+  http
   listen (~> 3.3)
   pg (~> 1.1)
   pry

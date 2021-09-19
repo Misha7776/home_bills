@@ -1,0 +1,27 @@
+h1 Listing webhook_endpoints
+
+table
+  thead
+    tr
+      th Url
+      th Subscriptions
+      th Enabled
+      th User
+      th
+      th
+      th
+
+  tbody
+    - @webhook_endpoints.each do |webhook_endpoint|
+      tr
+        td = webhook_endpoint.url
+        td = webhook_endpoint.subscriptions
+        td = webhook_endpoint.enabled
+        td = webhook_endpoint.user
+        td = link_to 'Show', webhook_endpoint
+        td = link_to 'Edit', edit_webhook_endpoint_path(webhook_endpoint)
+        td = link_to 'Destroy', webhook_endpoint, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Webhook endpoint', new_webhook_endpoint_path

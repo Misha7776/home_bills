@@ -4,4 +4,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :properties, dependent: :destroy
+  has_many :webhook_endpoints, dependent: :destroy
 end

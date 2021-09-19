@@ -6,7 +6,7 @@ RSpec.describe Users::Mutations::SignIn, type: :request do
 
     context 'when credentials are correct' do
       it 'should return a sign in token' do
-        post '/graphql', params: { query: query(email: user.email, password: user.password) }
+        post '/api/v1/graphql', params: { query: query(email: user.email, password: user.password) }
         expect(json.dig('data', 'signIn')).to eq({ token: Base64.encode64(user.email),
                                                    user: {
                                                      id: user.id.to_s,
@@ -17,7 +17,7 @@ RSpec.describe Users::Mutations::SignIn, type: :request do
 
     context 'when params are wrong' do
       it 'should return empty response' do
-        post '/graphql', params: { query: query(email: user.email, password: 'qwedfaqqwe') }
+        post '/api/v1/graphql', params: { query: query(email: user.email, password: 'qwedfaqqwe') }
         expect(json.dig('data', 'signIn')).to eq({ token: nil, user: nil }.as_json)
       end
     end

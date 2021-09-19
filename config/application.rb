@@ -25,7 +25,8 @@ module HomeBills
     config.paths.add 'data/concerns', eager_load: true
     config.paths.add 'business', eager_load: true
     config.paths.add 'infrastructure', eager_load: true
-    
+    config.paths.add 'lib', eager_load: true
+
     config.middleware.use Xlog::Middleware
     config.generators.test_framework = :rspec
     config.active_job.queue_adapter = :sidekiq

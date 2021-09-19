@@ -12,7 +12,7 @@ RSpec.describe Properties::Mutations::Destroy, type: :request do
 
       it 'should create a new property' do
         headers = { 'Authorization' => Base64.encode64(user.email) }
-        post '/graphql', params: { query: query(params: valid_params) }, headers: headers
+        post '/api/v1/graphql', params: { query: query(params: valid_params) }, headers: headers
         expect(Property.find_by(id: property.id)).not_to be_present
       end
     end
@@ -24,7 +24,7 @@ RSpec.describe Properties::Mutations::Destroy, type: :request do
 
       it 'should not create a property' do
         headers = { 'Authorization' => Base64.encode64(user.email) }
-        expect { post '/graphql', params: { query: invalid_query(params: invalid_params) }, headers: headers }
+        expect { post '/api/v1/graphql', params: { query: invalid_query(params: invalid_params) }, headers: headers }
           .to raise_error ActiveRecord::RecordNotFound
       end
     end

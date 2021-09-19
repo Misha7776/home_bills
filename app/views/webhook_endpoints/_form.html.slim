@@ -1,0 +1,21 @@
+= form_for @webhook_endpoint do |f|
+  - if @webhook_endpoint.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@webhook_endpoint.errors.count, "error")} prohibited this webhook_endpoint from being saved:"
+      ul
+        - @webhook_endpoint.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :url
+    = f.text_field :url
+  .field
+    = f.label :subscriptions
+    = f.text_field :subscriptions
+  .field
+    = f.label :enabled
+    = f.check_box :enabled
+  / .field
+    / = f.label :user
+  = f.hidden_field :user_id, value: current_user.id
+  .actions = f.submit

@@ -1,0 +1,21 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @property.name
+p
+  strong Address:
+  = @property.address
+p
+  strong City:
+  = @property.city
+p
+  strong Notes:
+  = @property.notes
+p
+  strong User:
+  = @property.user
+
+=> link_to 'Edit', edit_property_path(@property)
+'|
+=< link_to 'Back', properties_path

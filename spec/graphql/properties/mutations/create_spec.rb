@@ -9,7 +9,7 @@ RSpec.describe Properties::Mutations::Create, type: :request do
 
       it 'should create a new property' do
         headers = { 'Authorization' => Base64.encode64(user.email) }
-        post '/graphql', params: { query: query(params: property_attributes) }, headers: headers
+        post '/api/v1/graphql', params: { query: query(params: property_attributes) }, headers: headers
         property = Property.find(json.dig('data', 'createProperty', 'property', 'id'))
         expect(property).to be_present
         expect(property.name).to eq(property_attributes[:name])
@@ -20,7 +20,7 @@ RSpec.describe Properties::Mutations::Create, type: :request do
       let!(:property_attributes) { attributes_for(:property, user_id: user.id) }
 
       it 'should not create a property' do
-        post '/graphql', params: { query: invalid_query(params: property_attributes) }
+        post '/api/v1/graphql', params: { query: invalid_query(params: property_attributes) }
         expect(json['errors'][0]['message']).to be_present
       end
     end

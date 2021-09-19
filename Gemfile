@@ -46,6 +46,8 @@ gem 'r_creds'
 gem 'redis'
 gem 'slim-rails'
 gem 'xlog'
+gem 'http'
+gem 'faraday'
 
 group :development, :test do
   gem 'dotenv'
