@@ -1,6 +1,8 @@
 p#notice = notice
 
 p
+  = image_tag(@property.photo, width: 200) if @property.photo.attached?
+p
   strong Name:
   = @property.name
 p
@@ -14,7 +16,7 @@ p
   = @property.notes
 p
   strong User:
-  = @property.user
+  = @property.user.email
 
 => link_to 'Edit', edit_property_path(@property)
 '|

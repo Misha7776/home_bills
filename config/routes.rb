@@ -16,4 +16,6 @@ Rails.application.routes.draw do
       post '/graphql', to: 'graphql#execute'
     end
   end
+
+  get 'health_check', to: 'health_checks#check'
 end

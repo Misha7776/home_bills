@@ -19,7 +19,7 @@ table
         td = property.address
         td = property.city
         td = property.notes
-        td = property.user
+        td = property.user.email
         td = link_to 'Show', property
         td = link_to 'Edit', edit_property_path(property)
         td = link_to 'Destroy', property, data: { confirm: 'Are you sure?' }, method: :delete

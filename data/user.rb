@@ -5,4 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :properties, dependent: :destroy
   has_many :webhook_endpoints, dependent: :destroy
+
+  has_one_attached :avatar
 end
