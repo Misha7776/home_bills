@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-bills-rails-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-bills-rails-app
+  template:
+    metadata:
+      labels:
+        app: home-bills-rails-app
+    spec:
+      containers:
+        - name: home-bills-rails-app
+          image: gufy/home_bills:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health_check
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health_check
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 5
+            periodSeconds: 15
+          env:
+            - name: POSTGRES_HOST
+              value: "127.0.0.1"
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: rails-master-key
+                  key: rails_master_key
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: database
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: username
+            - name: CLOUD_STORAGE_CREDENTIALS
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-storage-credentials
+                  key: cloud-storage-credentials.json
+            - name: CLOUD_STORAGE_PROJECT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-storage-credentials
+                  key: cloud_storage_project_name
+            - name: CLOUD_STORAGE_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-storage-credentials
+                  key: cloud_storage_bucket_name
+          envFrom:
+            - configMapRef:
+                name: prod-envs
+          resources:
+            limits:
+              cpu: 250m
+              memory: 350Mi
+            requests:
+              cpu: 200m
+              memory: 300Mi
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.13
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - |
+              /cloud_sql_proxy --dir=/cloudsql -instances=homebills-326510:europe-north1:home-bills-production=tcp:5432 -term_timeout=30s -credential_file=/secrets/cloudsql/credentials.json &
+              CHILD_PID=$!
+              until [ -f /opt/exit-signals/SIGTERM ]; do sleep 1; done; kill $CHILD_PID; wait $CHILD_PID; echo "Exiting sql proxy pod";
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - mountPath: /opt/exit-signals
+              name: exit-signals
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+        - name: exit-signals
+          emptyDir: { }
