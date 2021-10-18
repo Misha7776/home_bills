@@ -21,9 +21,9 @@ class WebhookEndpointsController < ApplicationController
 
   # POST /webhook_endpoints
   def create
-    @webhook_endpoint = WebhookEndpoint.new(webhook_endpoint_params)
-
-    if @webhook_endpoint.save
+    if (res = WebhookEndpoints::Operations::Create.call(record_params: webhook_endpoint_params)).success?
+      @webhook_endpoint = res.args[:record]
+      binding.pry
       redirect_to @webhook_endpoint, notice: 'Webhook endpoint was successfully created.'
     else
       render :new
@@ -32,7 +32,9 @@ class WebhookEndpointsController < ApplicationController
 
   # PATCH/PUT /webhook_endpoints/1
   def update
-    if @webhook_endpoint.update(webhook_endpoint_params)
+    if (res = WebhookEndpoints::Operations::Update.call(record_params: webhook_endpoint_params,
+                                                        record: @webhook_endpoint)).success?
+      @webhook_endpoint = res.args[:record]
       redirect_to @webhook_endpoint, notice: 'Webhook endpoint was successfully updated.'
     else
       render :edit
@@ -41,18 +43,19 @@ class WebhookEndpointsController < ApplicationController
 
   # DELETE /webhook_endpoints/1
   def destroy
-    @webhook_endpoint.destroy
+    WebhookEndpoints::Operations::Destroy.call(record: @webhook_endpoint)
     redirect_to webhook_endpoints_url, notice: 'Webhook endpoint was successfully destroyed.'
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_webhook_endpoint
-      @webhook_endpoint = WebhookEndpoint.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def webhook_endpoint_params
-      params.require(:webhook_endpoint).permit(:url, :subscriptions, :enabled, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_webhook_endpoint
+    @webhook_endpoint = WebhookEndpoint.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def webhook_endpoint_params
+    params.require(:webhook_endpoint).permit!
+  end
 end

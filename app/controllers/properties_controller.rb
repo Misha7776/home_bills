@@ -1,17 +1,24 @@
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show edit update destroy]
+  before_action :set_page_meta_tags, only: %i[index show new edit]
 
   def index
+    @page_title = 'Listing properties'
     @properties = current_user.properties
   end
 
-  def show; end
+  def show
+    @page_title = "Property - #{@property.name}"
+  end
 
   def new
+    @page_title = 'New property'
     @property = Property.new
   end
 
-  def edit; end
+  def edit
+    @page_title = "Edit #{@property.name}"
+  end
 
   def create
     res = Properties::Operations::Create.call(record_params: property_params.merge!(user_id: current_user.id))
@@ -40,8 +47,12 @@ class PropertiesController < ApplicationController
 
   private
 
+  def set_page_meta_tags
+    set_meta_tags title: @page_title, description: 'Member login page.', keywords: 'Site, Login, Members'
+  end
+
   def set_property
-    @property = Property.find(params[:id])
+    @property = Property.friendly.find(params[:id])
   end
 
   def property_params

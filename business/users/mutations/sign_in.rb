@@ -9,26 +9,26 @@ module Users
       field :errors, [String], null: false
 
       def resolve(email:, password:)
-        return credentials_invalid if find_user(email).blank?
-        return credentials_invalid unless user.valid_password?(password)
+        return credentials_invalid if find_record(email).blank?
+        return credentials_invalid unless record.valid_password?(password)
 
         successful_response
       end
 
       private
 
-      attr_reader :user
+      attr_reader :record
 
-      def find_user(email)
-        @user = User.find_by!(email: email)
+      def find_record(email)
+        @record = User.find_by!(email: email)
       end
 
       def token
-        Base64.encode64(user.email)
+        Base64.encode64(record.email)
       end
 
       def successful_response
-        { token: token, user: user }
+        { token: token, user: record }
       end
 
       def credentials_invalid

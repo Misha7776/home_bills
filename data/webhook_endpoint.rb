@@ -1,4 +1,5 @@
 class WebhookEndpoint < ApplicationRecord
+  belongs_to :user
   has_many :webhook_events, dependent: :destroy, inverse_of: :webhook_endpoint
 
   # validates :url, presence: true

@@ -6,6 +6,8 @@
         <language minSize="50" name="Ruby" />
       </Languages>
     </inspection_tool>
+    <inspection_tool class="RubyConvertAllHashesInFileInspections" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="RubyStringKeysInHashInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="TodoComment" enabled="true" level="WARNING" enabled_by_default="true" />
   </profile>
 </component>

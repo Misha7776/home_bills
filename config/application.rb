@@ -50,5 +50,8 @@ module HomeBills
       g.helper          false
       g.channel         assets: false
     end
+    config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
+      r301 %r{^/(.*)/$}, '/$1'
+    end
   end
 end

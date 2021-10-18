@@ -50,6 +50,13 @@ gem 'xlog'
 gem 'http'
 gem 'faraday'
 
+#SEO
+gem 'dynamic_sitemaps'
+gem 'meta-tags'
+gem 'open_graph_reader'
+gem 'rack-rewrite'
+gem 'friendly_id', '~> 5.4.0'
+
 group :development, :test do
   gem 'dotenv'
   gem 'pry'

@@ -46,7 +46,7 @@ class BaseForm
 
   def sync_errors(from: self, to: record)
     errors = from.errors.instance_variable_get('@errors')
-    # errors.merge!(to.errors.instance_variable_get('@errors'))
+    errors.concat(to.errors.instance_variable_get('@errors')) if record.present?
 
     to.errors.instance_variable_set('@errors', errors)
   end
